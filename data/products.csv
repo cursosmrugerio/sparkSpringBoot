@@ -1,0 +1,18 @@
+product_id,product_name,category,price,stock
+PROD001,Wireless Mouse,Electronics,29.99,150
+PROD002,Laptop Stand,Accessories,129.99,75
+PROD003,USB Cable,Electronics,14.99,300
+PROD004,Mechanical Keyboard,Electronics,299.99,50
+PROD005,Phone Case,Accessories,19.99,200
+PROD006,Webcam HD,Electronics,89.99,80
+PROD007,Desk Lamp,Home,49.99,120
+PROD008,Monitor 27",Electronics,449.99,40
+PROD009,Notebook Set,Office,29.99,180
+PROD010,Bluetooth Speaker,Electronics,149.99,90
+PROD011,Gaming Chair,Furniture,799.99,30
+PROD012,Pen Pack,Office,24.99,250
+PROD013,External SSD 1TB,Electronics,89.99,60
+PROD014,Smartwatch,Electronics,599.99,45
+PROD015,Coffee Mug,Home,39.99,150
+PROD016,Tablet 10",Electronics,349.99,55
+PROD017,Backpack,Accessories,49.99,100

@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/ecommerce_analytics
+    username: sparkuser
+    password: sparkpass
+    driver-class-name: org.postgresql.Driver
+
+spark:
+  master: spark://spark-master:7077
+  data:
+    path: /data

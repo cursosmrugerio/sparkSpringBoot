@@ -1,0 +1,18 @@
+customer_id,name,email,phone,region,age,registration_date
+CUST101,John Doe,john.doe@email.com,555-0101,North,35,2023-01-15
+CUST102,Jane Smith,jane.smith@email.com,555-0102,South,28,2023-02-20
+CUST103,Bob Johnson,bob.johnson@email.com,555-0103,East,42,2023-03-10
+CUST104,Alice Brown,alice.brown@email.com,555-0104,West,31,2023-04-05
+CUST105,Charlie Davis,charlie.davis@email.com,555-0105,North,45,2023-05-12
+CUST106,Eva Wilson,eva.wilson@email.com,555-0106,South,27,2023-06-18
+CUST107,Frank Miller,frank.miller@email.com,555-0107,East,39,2023-07-22
+CUST108,Grace Lee,grace.lee@email.com,555-0108,West,33,2023-08-30
+CUST109,Henry Taylor,henry.taylor@email.com,555-0109,North,29,2023-09-14
+CUST110,Iris Anderson,iris.anderson@email.com,555-0110,South,38,2023-10-01
+CUST111,Jack Thomas,jack.thomas@email.com,555-0111,East,41,2023-11-05
+CUST112,Kelly White,kelly.white@email.com,555-0112,West,26,2023-12-10
+CUST113,Leo Martin,leo.martin@email.com,555-0113,North,34,2024-01-15
+CUST114,Mia Garcia,mia.garcia@email.com,555-0114,South,30,2024-02-20
+CUST115,Noah Rodriguez,noah.rodriguez@email.com,555-0115,East,37,2024-03-25
+CUST116,Olivia Martinez,olivia.martinez@email.com,555-0116,West,32,2024-04-30
+CUST117,Paul Hernandez,paul.hernandez@email.com,555-0117,North,44,2024-05-15
