@@ -66,13 +66,15 @@ public class AnalyticsService {
 
         // Convertir a List<SalesByCategory>
         return result.collectAsList().stream()
-                .map(row -> new SalesByCategory(
-                        row.getAs("category"),
-                        row.getAs("totalSales"),
-                        row.getAs("totalQuantity"),
-                        row.getAs("avgAmount"),
-                        row.getAs("transactionCount")
-                ))
+                .map(row -> {
+                    SalesByCategory sales = new SalesByCategory();
+                    sales.setCategory(row.getAs("category"));
+                    sales.setTotalSales(row.getAs("totalSales"));
+                    sales.setTotalQuantity(row.getAs("totalQuantity"));
+                    sales.setAvgAmount(row.getAs("avgAmount"));
+                    sales.setTransactionCount(row.getAs("transactionCount"));
+                    return sales;
+                })
                 .toList();
     }
 
@@ -106,14 +108,16 @@ public class AnalyticsService {
 
         // Convertir a List<TopProduct>
         return result.collectAsList().stream()
-                .map(row -> new TopProduct(
-                        row.getAs("product_id"),
-                        row.getAs("product_name"),
-                        row.getAs("category"),
-                        row.getAs("totalSales"),
-                        row.getAs("quantity"),
-                        row.getAs("rank")
-                ))
+                .map(row -> {
+                    TopProduct product = new TopProduct();
+                    product.setProductId(row.getAs("product_id"));
+                    product.setProductName(row.getAs("product_name"));
+                    product.setCategory(row.getAs("category"));
+                    product.setTotalSales(row.getAs("totalSales"));
+                    product.setQuantity(row.getAs("quantity"));
+                    product.setRank(row.getAs("rank"));
+                    return product;
+                })
                 .toList();
     }
 
@@ -184,13 +188,15 @@ public class AnalyticsService {
 
         // Convertir a List<DailySalesSummary>
         return result.collectAsList().stream()
-                .map(row -> new DailySalesSummary(
-                        row.getAs("date").toString(),
-                        row.getAs("totalSales"),
-                        row.getAs("transactionCount"),
-                        row.getAs("avgTicket"),
-                        row.getAs("uniqueCustomers")
-                ))
+                .map(row -> {
+                    DailySalesSummary summary = new DailySalesSummary();
+                    summary.setDate(row.getAs("date").toString());
+                    summary.setTotalSales(row.getAs("totalSales"));
+                    summary.setTransactionCount(row.getAs("transactionCount"));
+                    summary.setAvgTicket(row.getAs("avgTicket"));
+                    summary.setUniqueCustomers(row.getAs("uniqueCustomers"));
+                    return summary;
+                })
                 .toList();
     }
 
@@ -227,13 +233,15 @@ public class AnalyticsService {
 
         // Convertir a List<SalesByRegion>
         return result.collectAsList().stream()
-                .map(row -> new SalesByRegion(
-                        row.getAs("region"),
-                        row.getAs("totalSales"),
-                        row.getAs("customerCount"),
-                        row.getAs("transactionCount"),
-                        row.getAs("avgTicket")
-                ))
+                .map(row -> {
+                    SalesByRegion region = new SalesByRegion();
+                    region.setRegion(row.getAs("region"));
+                    region.setTotalSales(row.getAs("totalSales"));
+                    region.setCustomerCount(row.getAs("customerCount"));
+                    region.setTransactionCount(row.getAs("transactionCount"));
+                    region.setAvgTicket(row.getAs("avgTicket"));
+                    return region;
+                })
                 .toList();
     }
 
