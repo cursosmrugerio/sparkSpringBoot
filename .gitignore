@@ -144,3 +144,21 @@ postgres-data/
 # Local configuration overrides
 application-local-*.yml
 !application-local.yml
+
+# Spark output files (Parquet, ORC, etc.)
+output/
+*.parquet/
+*.orc/
+*.avro/
+_SUCCESS
+*.crc
+
+# Test output files
+/tmp/test_response_*.json
+
+# Documentation temporary files
+docs/tmp/
+
+# Checkpoint directories
+checkpoint/
+.checkpoint/
