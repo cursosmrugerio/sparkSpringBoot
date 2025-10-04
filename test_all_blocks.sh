@@ -59,19 +59,19 @@ echo "╚═══════════════════════�
 echo ""
 
 run_test "1.1 - Leer todas las transacciones" \
-    "curl -s http://localhost:8080/api/spark/transactions"
+    "curl -s http://localhost:8080/api/data/transactions"
 
 run_test "1.2 - Leer todos los productos" \
-    "curl -s http://localhost:8080/api/spark/products"
+    "curl -s http://localhost:8080/api/data/products"
 
 run_test "1.3 - Leer todos los clientes" \
-    "curl -s http://localhost:8080/api/spark/customers"
+    "curl -s http://localhost:8080/api/data/customers"
 
-run_test "1.4 - Filtrar transacciones por región (Norte)" \
-    "curl -s 'http://localhost:8080/api/spark/transactions/by-region?region=Norte'"
+run_test "1.4 - Health check de Spark" \
+    "curl -s http://localhost:8080/api/data/health"
 
-run_test "1.5 - Obtener transacciones de alto valor (>300)" \
-    "curl -s 'http://localhost:8080/api/spark/transactions/high-value?minAmount=300'"
+run_test "1.5 - Transacciones limpias (optimización)" \
+    "curl -s http://localhost:8080/api/optimization/transactions/clean"
 
 # ============================================================================
 # BLOQUE 2: Transformaciones y Agregaciones
@@ -83,19 +83,19 @@ echo "╚═══════════════════════�
 echo ""
 
 run_test "2.1 - Ventas totales por categoría" \
-    "curl -s http://localhost:8080/api/spark/sales/by-category"
+    "curl -s http://localhost:8080/api/sales/by-category"
 
 run_test "2.2 - Top 5 productos más vendidos" \
-    "curl -s 'http://localhost:8080/api/spark/products/top?limit=5'"
+    "curl -s 'http://localhost:8080/api/products/top-selling?limit=5'"
 
 run_test "2.3 - Ventas por región" \
-    "curl -s http://localhost:8080/api/spark/sales/by-region"
+    "curl -s http://localhost:8080/api/sales/by-region"
 
 run_test "2.4 - Estadísticas de ventas" \
-    "curl -s http://localhost:8080/api/spark/sales/stats"
+    "curl -s http://localhost:8080/api/sales/statistics"
 
-run_test "2.5 - Productos con descuento aplicado" \
-    "curl -s http://localhost:8080/api/spark/products/with-discount"
+run_test "2.5 - Resumen diario de ventas" \
+    "curl -s http://localhost:8080/api/sales/daily-summary"
 
 # ============================================================================
 # BLOQUE 3: UDFs, Persistencia y Optimización
@@ -109,38 +109,38 @@ echo ""
 run_test "3.1 - Detección de fraude y persistencia" \
     "curl -s -X POST http://localhost:8080/api/fraud/detect-and-save"
 
-run_test "3.2 - Obtener alertas de fraude no revisadas" \
-    "curl -s http://localhost:8080/api/fraud/alerts/pending"
+run_test "3.2 - Obtener todas las alertas de fraude" \
+    "curl -s 'http://localhost:8080/api/fraud/alerts?onlyUnreviewed=false'"
 
 run_test "3.3 - Alertas de alto riesgo" \
     "curl -s http://localhost:8080/api/fraud/alerts/high-risk"
 
-run_test "3.4 - Validar emails de clientes" \
-    "curl -s http://localhost:8080/api/customers/validate-emails"
+run_test "3.4 - Estadísticas de fraude" \
+    "curl -s http://localhost:8080/api/fraud/statistics"
 
-run_test "3.5 - Categorizar montos de transacciones" \
-    "curl -s http://localhost:8080/api/transactions/categorize-amounts"
+run_test "3.5 - Patrones de fraude por cliente" \
+    "curl -s http://localhost:8080/api/fraud/customer-patterns"
 
-run_test "3.6 - Detección de duplicados" \
-    "curl -s http://localhost:8080/api/fraud/detect-duplicates"
+run_test "3.6 - Detección de duplicados sospechosos" \
+    "curl -s http://localhost:8080/api/fraud/duplicates"
 
-run_test "3.7 - Limpiar datos (eliminar nulls/duplicados)" \
-    "curl -s -X POST http://localhost:8080/api/data/clean"
+run_test "3.7 - Transacciones enriquecidas (optimización)" \
+    "curl -s http://localhost:8080/api/optimization/transactions/enriched"
 
-run_test "3.8 - Dashboard de estadísticas" \
-    "curl -s http://localhost:8080/api/dashboard/stats"
+run_test "3.8 - Estadísticas de persistencia" \
+    "curl -s http://localhost:8080/api/persistence/stats"
 
-run_test "3.9 - Guardar reporte de ventas" \
-    "curl -s -X POST http://localhost:8080/api/reports/sales/save"
+run_test "3.9 - Obtener reportes de ventas guardados" \
+    "curl -s http://localhost:8080/api/persistence/reports"
 
-run_test "3.10 - Obtener todos los reportes de ventas" \
-    "curl -s http://localhost:8080/api/reports/sales"
+run_test "3.10 - Performance de productos" \
+    "curl -s http://localhost:8080/api/persistence/products/performance"
 
-run_test "3.11 - Análisis de performance de productos" \
-    "curl -s -X POST http://localhost:8080/api/products/analyze-performance"
+run_test "3.11 - Top productos por ingresos" \
+    "curl -s 'http://localhost:8080/api/persistence/products/top-revenue?limit=5'"
 
-run_test "3.12 - Obtener productos de alto rendimiento" \
-    "curl -s 'http://localhost:8080/api/products/performance/top?limit=5'"
+run_test "3.12 - Broadcast join de transacciones" \
+    "curl -s http://localhost:8080/api/optimization/transactions/broadcast-join"
 
 # ============================================================================
 # BLOQUE 4: Batch Processing y Automatización
@@ -178,14 +178,20 @@ echo "║              TESTS DE INTEGRACIÓN                            ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
 echo ""
 
-run_test "INT.1 - Verificar health check de aplicación" \
-    "curl -s http://localhost:8080/actuator/health"
+run_test "INT.1 - Health check de Spark (reemplazo de Actuator)" \
+    "curl -s http://localhost:8080/api/data/health"
 
 run_test "INT.2 - Filtrar ejecuciones por job name" \
     "curl -s 'http://localhost:8080/api/batch/executions?jobName=ETL_DAILY_PIPELINE'"
 
 run_test "INT.3 - Filtrar ejecuciones por status" \
     "curl -s 'http://localhost:8080/api/batch/executions?status=SUCCESS'"
+
+run_test "INT.4 - Análisis de producto específico" \
+    "curl -s http://localhost:8080/api/products/PROD001/analytics"
+
+run_test "INT.5 - Patrones de fraude por producto" \
+    "curl -s http://localhost:8080/api/fraud/product-patterns"
 
 # ============================================================================
 # RESUMEN DE RESULTADOS
