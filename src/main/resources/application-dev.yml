@@ -1,0 +1,65 @@
+# Configuración para ambiente de DESARROLLO
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_analytics_dev
+    username: ${DB_USERNAME:sparkuser}
+    password: ${DB_PASSWORD:sparkpass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Actualiza esquema automáticamente en dev
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+
+# Configuración de Spark para desarrollo
+spark:
+  app:
+    name: ecommerce-analytics-dev
+  master: local[2]  # 2 cores para desarrollo
+  data:
+    path: ./data
+  config:
+    spark.sql.shuffle.partitions: 10  # Menos particiones para desarrollo
+    spark.default.parallelism: 4
+
+# Logging más detallado para desarrollo
+logging:
+  level:
+    com.ecommerce.analytics: DEBUG
+    org.apache.spark: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Scheduling - Jobs deshabilitados por defecto en dev (activar manualmente si es necesario)
+scheduling:
+  enabled: false  # Controla si @Scheduled está activo
+
+# Métricas y monitoreo
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,scheduledtasks
+  endpoint:
+    health:
+      show-details: always
+
+# Configuración de batch jobs
+batch:
+  etl:
+    chunk-size: 1000  # Tamaño de lote para procesamiento
+    output-path: ./output/dev
+  report:
+    retention-days: 30  # Retención de reportes en dev

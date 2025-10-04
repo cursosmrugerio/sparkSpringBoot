@@ -1,0 +1,97 @@
+# Configuración para ambiente de PRODUCCIÓN
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://prod-db-server:5432/ecommerce_analytics_prod}
+    username: ${DB_USERNAME}  # Obligatorio desde variables de entorno
+    password: ${DB_PASSWORD}  # Obligatorio desde variables de entorno
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 600000
+      leak-detection-threshold: 60000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate  # NO actualiza esquema en producción
+    show-sql: false  # Desactivar logs SQL en producción
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+# Configuración de Spark para producción
+spark:
+  app:
+    name: ecommerce-analytics-prod
+  master: ${SPARK_MASTER:local[*]}  # Configurar según cluster
+  data:
+    path: ${DATA_PATH:/data/ecommerce}
+  config:
+    spark.sql.shuffle.partitions: 200  # Más particiones para producción
+    spark.default.parallelism: 100
+    spark.sql.adaptive.enabled: true
+    spark.sql.adaptive.coalescePartitions.enabled: true
+    spark.serializer: org.apache.spark.serializer.KryoSerializer
+    spark.kryoserializer.buffer.max: 256m
+
+# Logging optimizado para producción
+logging:
+  level:
+    com.ecommerce.analytics: INFO
+    org.apache.spark: WARN
+    org.springframework: WARN
+    org.hibernate: WARN
+  file:
+    name: /var/log/ecommerce-analytics/application.log
+    max-size: 100MB
+    max-history: 30
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Scheduling - Jobs habilitados en producción
+scheduling:
+  enabled: ${SCHEDULING_ENABLED:true}
+
+# Métricas y monitoreo
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Configuración de batch jobs
+batch:
+  etl:
+    chunk-size: ${ETL_CHUNK_SIZE:10000}
+    output-path: ${OUTPUT_PATH:/data/output}
+    max-retry-attempts: 3
+    retry-delay-ms: 5000
+  report:
+    retention-days: ${REPORT_RETENTION_DAYS:365}
+  scheduling:
+    daily-etl-cron: ${DAILY_ETL_CRON:0 0 2 * * *}  # 2:00 AM por defecto
+    daily-report-cron: ${DAILY_REPORT_CRON:0 0 3 * * *}  # 3:00 AM por defecto
+    incremental-cron: ${INCREMENTAL_CRON:0 0 * * * *}  # Cada hora por defecto
+
+# Configuración de seguridad
+server:
+  port: ${SERVER_PORT:8080}
+  ssl:
+    enabled: ${SSL_ENABLED:false}
+    key-store: ${SSL_KEYSTORE}
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-store-type: PKCS12
