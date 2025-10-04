@@ -162,3 +162,13 @@ docs/tmp/
 # Checkpoint directories
 checkpoint/
 .checkpoint/
+
+# JaCoCo code coverage
+target/site/jacoco/
+*.exec
+jacoco.exec
+jacoco-it.exec
+
+# Test reports
+target/surefire-reports/
+target/test-classes/
