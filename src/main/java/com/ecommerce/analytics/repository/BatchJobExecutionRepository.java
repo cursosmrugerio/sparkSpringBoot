@@ -52,5 +52,5 @@ public interface BatchJobExecutionRepository extends JpaRepository<BatchJobExecu
      */
     @Query("SELECT AVG(e.durationMs), SUM(e.recordsProcessed), COUNT(e) " +
            "FROM BatchJobExecutionEntity e WHERE e.jobName = ?1 AND e.status = 'SUCCESS'")
-    Object[] getJobMetrics(String jobName);
+    List<Object[]> getJobMetrics(String jobName);
 }

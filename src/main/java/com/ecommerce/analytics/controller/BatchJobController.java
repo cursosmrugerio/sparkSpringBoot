@@ -142,14 +142,36 @@ public class BatchJobController {
      */
     @GetMapping("/metrics/{jobName}")
     public ResponseEntity<Map<String, Object>> getJobMetrics(@PathVariable String jobName) {
-        Object[] metrics = jobExecutionRepository.getJobMetrics(jobName);
+        List<Object[]> metricsList = jobExecutionRepository.getJobMetrics(jobName);
 
         Map<String, Object> result = new HashMap<>();
-        if (metrics != null && metrics.length >= 3) {
-            result.put("jobName", jobName);
-            result.put("avgDurationMs", metrics[0]);
-            result.put("totalRecordsProcessed", metrics[1]);
-            result.put("successfulExecutions", metrics[2]);
+        result.put("jobName", jobName);
+
+        if (metricsList != null && !metricsList.isEmpty()) {
+            Object[] metrics = metricsList.get(0);
+
+            if (metrics != null && metrics.length >= 3) {
+                // Convertir valores, manejando posibles nulls
+                Double avgDuration = metrics[0] != null ? ((Number) metrics[0]).doubleValue() : 0.0;
+                Long totalRecords = metrics[1] != null ? ((Number) metrics[1]).longValue() : 0L;
+                Long successfulExecs = metrics[2] != null ? ((Number) metrics[2]).longValue() : 0L;
+
+                result.put("avgDurationMs", avgDuration);
+                result.put("totalRecordsProcessed", totalRecords);
+                result.put("successfulExecutions", successfulExecs);
+            } else {
+                // No hay suficientes datos
+                result.put("avgDurationMs", 0.0);
+                result.put("totalRecordsProcessed", 0L);
+                result.put("successfulExecutions", 0L);
+                result.put("message", "No metrics available for this job");
+            }
+        } else {
+            // No hay métricas disponibles
+            result.put("avgDurationMs", 0.0);
+            result.put("totalRecordsProcessed", 0L);
+            result.put("successfulExecutions", 0L);
+            result.put("message", "No metrics available for this job");
         }
 
         return ResponseEntity.ok(result);

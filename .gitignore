@@ -70,6 +70,9 @@ out/
 .vscode/
 *.code-workspace
 
+# Claude AI Assistant
+.claude/
+
 # macOS
 .DS_Store
 .AppleDouble
